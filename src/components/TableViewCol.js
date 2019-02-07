@@ -7,7 +7,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 
-export const defaultViewColStyles = theme => ({
+export const defaultViewColStyles = {
   root: {
     padding: '16px 24px 16px 24px',
     fontFamily: 'Roboto',
@@ -15,7 +15,7 @@ export const defaultViewColStyles = theme => ({
   title: {
     marginLeft: '-7px',
     fontSize: '14px',
-    color: theme.palette.text.secondary,
+    color: '#424242',
     textAlign: 'left',
     fontWeight: 500,
   },
@@ -30,16 +30,16 @@ export const defaultViewColStyles = theme => ({
   },
   checkboxRoot: {
     '&$checked': {
-      color: theme.palette.primary.main,
+      color: '#027cb5',
     },
   },
   checked: {},
   label: {
     fontSize: '15px',
     marginLeft: '8px',
-    color: theme.palette.text.primary,
+    color: '#4a4a4a',
   },
-});
+};
 
 class TableViewCol extends React.Component {
   static propTypes = {
@@ -69,8 +69,7 @@ class TableViewCol extends React.Component {
         <FormGroup className={classes.formGroup}>
           {columns.map((column, index) => {
             return (
-              column.display !== 'excluded' &&
-              column.viewColumns !== false && (
+              column.display !== 'excluded' && (
                 <FormControlLabel
                   key={index}
                   classes={{

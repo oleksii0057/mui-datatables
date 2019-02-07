@@ -7,9 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { withStyles } from '@material-ui/core/styles';
 
-const defaultToolbarSelectStyles = theme => ({
+const defaultToolbarSelectStyles = {
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: '#f7f7f7',
     flex: '1 1 100%',
     display: 'flex',
     height: '64px',
@@ -30,8 +30,10 @@ const defaultToolbarSelectStyles = theme => ({
     position: 'relative',
     transform: 'translateY(-50%)',
   },
-  deleteIcon: {},
-});
+  deleteIcon: {
+    color: '#000',
+  },
+};
 
 class TableToolbarSelect extends React.Component {
   static propTypes = {

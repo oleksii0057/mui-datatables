@@ -30,11 +30,11 @@ const defaultSelectCellStyles = theme => ({
   },
   headerCell: {
     zIndex: 110,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#FFF',
   },
   checkboxRoot: {
     '&$checked': {
-      color: theme.palette.primary.main,
+      color: '#027cb5',
     },
   },
   checked: {},
@@ -51,19 +51,14 @@ class TableSelectCell extends React.Component {
     onChange: PropTypes.func,
     /** Extend the style applied to components */
     classes: PropTypes.object,
-    /** Is expandable option enabled */
-    expandableOn: PropTypes.bool,
-    /** Is selectable option enabled */
-    selectableOn: PropTypes.bool,
     /** Select cell disabled on/off */
     isRowSelectable: PropTypes.bool,
   };
 
   static defaultProps = {
     isHeaderCell: false,
+    isExpandable: false,
     isRowExpanded: false,
-    expandableOn: false,
-    selectableOn: false,
   };
 
   render() {
@@ -71,15 +66,12 @@ class TableSelectCell extends React.Component {
       classes,
       fixedHeader,
       isHeaderCell,
-      expandableOn,
-      selectableOn,
+      isExpandable,
       isRowExpanded,
       onExpand,
       isRowSelectable,
       ...otherProps
     } = this.props;
-
-    if (!expandableOn && !selectableOn) return false;
 
     const cellClass = classNames({
       [classes.root]: true,
@@ -96,18 +88,16 @@ class TableSelectCell extends React.Component {
     return (
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {expandableOn && <KeyboardArrowRight className={iconClass} onClick={onExpand} />}
-          {selectableOn && (
-            <Checkbox
-              classes={{
-                root: classes.checkboxRoot,
-                checked: classes.checked,
-                disabled: classes.disabled,
-              }}
-              disabled={!isRowSelectable}
-              {...otherProps}
-            />
-          )}
+          {isExpandable && <KeyboardArrowRight className={iconClass} onClick={onExpand} />}
+          <Checkbox
+            classes={{
+              root: classes.checkboxRoot,
+              checked: classes.checked,
+              disabled: classes.disabled,
+            }}
+            disabled={!isRowSelectable}
+            {...otherProps}
+          />
         </div>
       </TableCell>
     );

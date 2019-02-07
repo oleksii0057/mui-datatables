@@ -41,7 +41,6 @@ class TableResize extends React.Component {
   componentDidMount() {
     this.windowWidth = null;
     this.props.setResizeable(this.setCellRefs);
-    this.props.updateDividers(() => this.setState({ updateCoords: true }, () => this.updateWidths()));
     window.addEventListener('resize', this.handleReize, false);
   }
 
@@ -63,8 +62,6 @@ class TableResize extends React.Component {
     let finalCells = Object.entries(this.cellsRef);
 
     finalCells.forEach(([key, item]) => {
-      if (!item) return;
-
       const elRect = item.getBoundingClientRect();
       const elStyle = window.getComputedStyle(item, null);
 
@@ -86,7 +83,7 @@ class TableResize extends React.Component {
       lastPosition = item.left;
 
       const thCell = this.cellsRef[key];
-      if (thCell) thCell.style.width = newWidth + '%';
+      thCell.style.width = newWidth + '%';
     });
   };
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -13,11 +12,9 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core';
 
-export const defaultFilterStyles = theme => ({
+export const defaultFilterStyles = {
   root: {
-    backgroundColor: theme.palette.background.default,
     padding: '16px 24px 16px 24px',
     fontFamily: 'Roboto',
   },
@@ -31,7 +28,7 @@ export const defaultFilterStyles = theme => ({
   title: {
     display: 'inline-block',
     marginLeft: '7px',
-    color: theme.palette.text.primary,
+    color: '#424242',
     fontSize: '14px',
     fontWeight: 500,
   },
@@ -42,9 +39,16 @@ export const defaultFilterStyles = theme => ({
     alignSelf: 'left',
   },
   resetLink: {
-    marginLeft: '16px',
+    color: '#027cb5',
+    backgroundColor: '#FFF',
+    display: 'inline-block',
+    marginLeft: '24px',
     fontSize: '12px',
     cursor: 'pointer',
+    border: 'none',
+    '&:hover': {
+      color: '#FF0000',
+    },
   },
   filtersSelected: {
     alignSelf: 'right',
@@ -59,7 +63,7 @@ export const defaultFilterStyles = theme => ({
     marginLeft: '7px',
     marginBottom: '8px',
     fontSize: '14px',
-    color: theme.palette.text.secondary,
+    color: '#424242',
     textAlign: 'left',
     fontWeight: 500,
   },
@@ -72,15 +76,16 @@ export const defaultFilterStyles = theme => ({
   checkboxFormControlLabel: {
     fontSize: '15px',
     marginLeft: '8px',
-    color: theme.palette.text.primary,
+    color: '#4a4a4a',
   },
   checkboxIcon: {
+    //color: "#027cb5",
     width: '32px',
     height: '32px',
   },
   checkbox: {
     '&$checked': {
-      color: theme.palette.primary.main,
+      color: '#027cB5',
     },
   },
   checked: {},
@@ -99,20 +104,7 @@ export const defaultFilterStyles = theme => ({
     marginRight: '24px',
     marginBottom: '24px',
   },
-  /* textField */
-  textFieldRoot: {
-    display: 'flex',
-    marginTop: '16px',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '100%',
-  },
-  textFieldFormControl: {
-    flex: '1 1 calc(50% - 24px)',
-    marginRight: '24px',
-    marginBottom: '24px',
-  },
-});
+};
 
 class TableFilter extends React.Component {
   static propTypes = {
@@ -143,10 +135,6 @@ class TableFilter extends React.Component {
     this.props.onFilterUpdate(index, column, 'multiselect');
   };
 
-  handleTextFieldChange = (event, index) => {
-    this.props.onFilterUpdate(index, event.target.value, 'textField');
-  };
-
   renderCheckbox(columns) {
     const { classes, filterData, filterList } = this.props;
 
@@ -154,7 +142,7 @@ class TableFilter extends React.Component {
       column.filter ? (
         <div className={classes.checkboxList} key={index}>
           <FormGroup>
-            <Typography variant="body2" className={classes.checkboxListTitle}>
+            <Typography variant="caption" className={classes.checkboxListTitle}>
               {column.name}
             </Typography>
             {filterData[index].map((filterColumn, filterIndex) => (
@@ -220,28 +208,6 @@ class TableFilter extends React.Component {
     );
   }
 
-  renderTextField(columns) {
-    const { classes, filterList } = this.props;
-
-    return (
-      <div className={classes.textFieldRoot}>
-        {columns.map((column, index) =>
-          column.filter ? (
-            <FormControl className={classes.textFieldFormControl} key={index}>
-              <TextField
-                label={column.name}
-                value={filterList[index].toString() || ''}
-                onChange={event => this.handleTextFieldChange(event, index)}
-              />
-            </FormControl>
-          ) : (
-            false
-          ),
-        )}
-      </div>
-    );
-  }
-
   renderMultiselect(columns) {
     const { classes, filterData, filterList, options } = this.props;
 
@@ -291,21 +257,16 @@ class TableFilter extends React.Component {
         <div className={classes.header}>
           <div className={classes.reset}>
             <Typography
-              variant="body2"
+              variant="caption"
               className={classNames({
                 [classes.title]: true,
                 [classes.noMargin]: options.filterType !== 'checkbox' ? true : false,
               })}>
               {textLabels.title}
             </Typography>
-            <Button
-              color="primary"
-              className={classes.resetLink}
-              tabIndex={0}
-              aria-label={textLabels.reset}
-              onClick={onFilterReset}>
+            <button className={classes.resetLink} tabIndex={0} aria-label={textLabels.reset} onClick={onFilterReset}>
               {textLabels.reset}
-            </Button>
+            </button>
           </div>
           <div className={classes.filtersSelected} />
         </div>
@@ -313,8 +274,6 @@ class TableFilter extends React.Component {
           ? this.renderCheckbox(columns)
           : options.filterType === 'multiselect'
           ? this.renderMultiselect(columns)
-          : options.filterType === 'textField'
-          ? this.renderTextField(columns)
           : this.renderSelect(columns)}
       </div>
     );
